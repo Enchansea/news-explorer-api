@@ -8,6 +8,7 @@ node_modules
 
 # Optional npm cache directory
 .npm
+.eslintcache
 
 # System files and IDE settings folders
 .DS_Store
@@ -15,4 +16,4 @@ node_modules
 .vscode
 
 #etc
-.eslintcache
+WinstonErrors

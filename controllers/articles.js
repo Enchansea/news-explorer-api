@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 const Article = require('../models/articleSchema');
+const BadRequestError = require('../middleware/errors/BadRequestError');
+const NotFoundError = require('../middleware/errors/NotFoundError');
 
 // populate Articles
 const getArticle = (req, res, next) => Article.find({})
@@ -9,7 +11,7 @@ const getArticle = (req, res, next) => Article.find({})
 // create article
 const createArticle = (req, res, next) => {
   const { name, link } = req.body;
-  Article.create({ name, link, owner: req.user._id})
+  Article.create({ name, link, owner: req.user._id })
     .then((article) => {
       if (!article) {
         // replace Error with middleware Error
@@ -36,4 +38,4 @@ module.exports = {
   getArticle,
   createArticle,
   deleteArticle,
-}
+};

@@ -1,6 +1,10 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const isEmail = require('validator/lib/isEmail');
 const User = require('../models/userSchema');
+const NotFoundError = require('../middleware/errors/NotFoundError');
+const BadRequestError = require('../middleware/errors/BadRequestError');
+const UnauthorizedError = require('../middleware/errors/UnauthorizedError');
 
 const SALT_ROUND = 10;
 
@@ -43,10 +47,23 @@ const createUser = (req, res, next) => {
 };
 
 const login = (req, res, next) => {
-
-}
+  const { email, password, name } = req.body;
+  if (!isEmail(email)) {
+    throw new NotFoundError('incorrect email or password');
+  }
+  return User.findUserByCredentials(email, password, name)
+    .then((user) => {
+      if (!user) {
+        throw new UnauthorizedError('incorrect email or password');
+      }
+      const token = jwt.sign({ _id: user._id }, 'super-secret-code', { expiresIn: '7d' });
+      res.send({ token });
+    })
+    .catch(next);
+};
 
 module.exports = {
   getCurrentUser,
   createUser,
-}
+  login,
+};
