@@ -51,7 +51,7 @@ const login = (req, res, next) => {
   if (!isEmail(email)) {
     throw new NotFoundError('incorrect email or password');
   }
-  return User.findUserByCredentials(email, password )
+  return User.findUserByCredentials(email, password)
     .then((user) => {
       if (!user) {
         throw new UnauthorizedError('incorrect email or password');

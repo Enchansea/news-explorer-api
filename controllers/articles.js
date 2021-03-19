@@ -10,11 +10,12 @@ const getArticle = (req, res, next) => Article.find({})
 
 // create article
 const createArticle = (req, res, next) => {
-  const { name, link } = req.body;
-  Article.create({ name, link, owner: req.user._id })
+  const { keyword, title, text, date, source, link, image } = req.body;
+  console.log('createA', req.body);
+  Article.create({ keyword, title, text, date, source, link, image, owner: req.user._id })
     .then((article) => {
+      console.log('article', article);
       if (!article) {
-        // replace Error with middleware Error
         throw new BadRequestError('invalid data for creating article');
       }
       res.send(article);
@@ -24,7 +25,7 @@ const createArticle = (req, res, next) => {
 
 // delete article
 const deleteArticle = (req, res, next) => {
-  Article.findByIdAndRemove(req.params.cardID)
+  Article.findByIdAndRemove(req.params.articleID)
     .then((article) => {
       if (!article) {
         throw new NotFoundError('card not found');
