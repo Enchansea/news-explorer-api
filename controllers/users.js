@@ -47,11 +47,11 @@ const createUser = (req, res, next) => {
 };
 
 const login = (req, res, next) => {
-  const { email, password, name } = req.body;
+  const { email, password } = req.body;
   if (!isEmail(email)) {
     throw new NotFoundError('incorrect email or password');
   }
-  return User.findUserByCredentials(email, password, name)
+  return User.findUserByCredentials(email, password )
     .then((user) => {
       if (!user) {
         throw new UnauthorizedError('incorrect email or password');

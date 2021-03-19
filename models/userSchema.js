@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
-const bcrypt = require('bcryptjs');
+const validator = require('validator'); // library of string validators
+const bcrypt = require('bcryptjs'); // secure storage of passwords
 const UnauthorizedError = require('../middleware/errors/UnauthorizedError');
 
 const userSchema = new mongoose.Schema({
@@ -15,12 +15,8 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    reqired: true,
-    validate: {
-      // eslint-disable-next-line max-len
-      validator: (v) => validator.isStrongPassword(v, { minlength: 8, minNumbers: 1, minSymbols: 1 }),
-      message: 'Invalid password - minimum length: 8, minimum non alphanumeric characters: 1, min numbers: 1',
-    },
+    minlength: 8,
+    reqired: true,    
     select: false,
   },
   name: {
