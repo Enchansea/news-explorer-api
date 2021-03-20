@@ -15,7 +15,7 @@ const articleSchema = new mongoose.Schema({
   text: {
     type: String,
     required: true,
-    minlength: 100,
+    minlength: 2,
   },
   date: {
     type: String,
@@ -30,16 +30,16 @@ const articleSchema = new mongoose.Schema({
     required: true,
     minlength: 2,
     validate: {
-      validator: (v) => validator.isURL(v, { protocols: ['http', 'https', 'ftp'], require_tld: true, require_protocol: true }),
-      message: 'field "link" must be a valid url-address',
+      validator: (v) => validator.isURL(v, [{ allow_underscores: true }]),
+      message: 'field link is not a valid url format',
     },
   },
   image: {
     type: String,
     required: true,
     validate: {
-      validator: (v) => validator.isUrl(v, { protocols: ['http', 'https', 'ftp'], require_tld: true, require_protocol: true }),
-      message: 'field "image" must be a valid url-address',
+      validator: (v) => validator.isURL(v, [{ allow_underscores: true }]),
+      message: 'field image is not a valid url format',
     },
   },
   owner: {

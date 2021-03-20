@@ -60,6 +60,7 @@ app.get('*', () => {
   throw new NotFoundError('requested resource not found');
 });
 app.use(errorLogger);
+app.use(errors());
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
