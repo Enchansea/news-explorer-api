@@ -28,9 +28,8 @@ const createArticle = (req, res, next) => {
 
 // delete article
 const deleteArticle = (req, res, next) => {
-  Article.findByIdAndRemove(req.params.articleID)
+  Article.findByIdAndRemove(req.params.articleId)
     .then((article) => {
-      console.log('article', article);
       if (!article) {
         throw new NotFoundError('article not found');
       }
