@@ -6,7 +6,7 @@ const NotFoundError = require('../middleware/errors/NotFoundError');
 const BadRequestError = require('../middleware/errors/BadRequestError');
 const UnauthorizedError = require('../middleware/errors/UnauthorizedError');
 
-const NEWS_KEY = process.env.JWT_SECRET;
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 const SALT_ROUND = 10;
 
@@ -58,7 +58,7 @@ const login = (req, res, next) => {
       if (!user) {
         throw new UnauthorizedError('incorrect email or password');
       }
-      const token = jwt.sign({ _id: user._id }, NEWS_KEY, { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
       res.send({ token });
     })
     .catch(next);
