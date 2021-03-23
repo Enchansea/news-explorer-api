@@ -10,14 +10,14 @@ const { celebrate, Joi, errors } = require('celebrate');
 const rateLimit = require('express-rate-limit');
 const auth = require('./middleware/auth');
 
-const { PORT = 3000 } = process.env;
+const { NODE_ENV, MONGO_URL, PORT = 3000 } = process.env;
 const userRouter = require('./routes/users');
 const articleRouter = require('./routes/articles');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const { createUser, login } = require('./controllers/users');
 const NotFoundError = require('./middleware/errors/NotFoundError');
 
-mongoose.connect('mongodb://localhost:27017/newsb', {
+mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : 'mongodb://localhost:27017/newsb', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
