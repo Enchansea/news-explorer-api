@@ -24,7 +24,7 @@ router.post('/signup', celebrate({
   }),
 }), createUser);
 
-router.use(auth);
+router.use(auth)
 router.use('/users', userRouter);
 router.use('/articles', articleRouter);
 router.get('*', () => {
