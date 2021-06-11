@@ -22,7 +22,7 @@ mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : 'mongodb://localhost:27
 
 // Basic rate-limiting middleware. Limit repeated req to API's endpoints
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 1 * 60 * 1000, // 1 minute
   max: 100, // limit each IP to 100 requests per windowsMs
 });
 
