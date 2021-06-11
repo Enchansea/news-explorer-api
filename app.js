@@ -6,15 +6,11 @@ const cors = require('cors'); // cross-origin resource sharing.
 const app = express();
 const mongoose = require('mongoose'); // object data modeling
 const helmet = require('helmet'); // secure HTTP headers
-const { celebrate, Joi, errors } = require('celebrate');
 const rateLimit = require('express-rate-limit');
-const auth = require('./middleware/auth');
 
 const { NODE_ENV, MONGO_URL, PORT = 3000 } = process.env;
-const userRouter = require('./routes/users');
-const articleRouter = require('./routes/articles');
+const indexRouter = require('./routes/index');
 const { requestLogger, errorLogger } = require('./middleware/logger');
-const { createUser, login } = require('./controllers/users');
 const NotFoundError = require('./middleware/errors/NotFoundError');
 
 mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : 'mongodb://localhost:27017/newsb', {
@@ -38,29 +34,8 @@ app.use(requestLogger);
 app.use(helmet());
 app.use(limiter);
 
-app.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), login);
-
-app.post('/signup', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), createUser);
-
-app.use(auth);
-app.use('/', userRouter);
-app.use('/', articleRouter);
-app.get('*', () => {
-  throw new NotFoundError('requested resource not found');
-});
+app.use('/', indexRouter);
 app.use(errorLogger);
-app.use(errors());
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;

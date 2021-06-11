@@ -10,7 +10,7 @@ const {
 
 articleRouter.get('/articles', getArticle);
 
-articleRouter.post('/articles', celebrate({
+articleRouter.post('/', celebrate({
   body: Joi.object().keys({
     keyword: Joi.string().required(),
     title: Joi.string().required(),
@@ -23,9 +23,9 @@ articleRouter.post('/articles', celebrate({
 }), createArticle);
 // articleRouter.post('/articles', createArticle);
 
-articleRouter.delete('/articles/:articleId', celebrate({
+articleRouter.delete('/:articleId', celebrate({
   params: Joi.object().keys({
-    articleId: Joi.string().required(),
+    articleId: Joi.string().hex().required(),
   }),
 }), deleteArticle);
 // articleRouter.delete('/articles/articleId', deleteArticle);
