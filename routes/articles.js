@@ -8,7 +8,7 @@ const {
 
 } = require('../controllers/articles');
 
-articleRouter.get('/articles', getArticle);
+articleRouter.get('/', getArticle);
 
 articleRouter.post('/', celebrate({
   body: Joi.object().keys({
